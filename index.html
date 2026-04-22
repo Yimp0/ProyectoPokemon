@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pokémon Teambuilder</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ENCABEZADO / NAVEGACION PRINCIPAL -->
+<header id="cabecera-principal">
+    <div id="cabecera-interior">
+
+        <div id="logotipo">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/xtransceiver.png">
+            <span id="logotipo-texto">Teambuilder</span>
+        </div>
+
+        <!-- Navegación escritorio -->
+        <nav id="navegacion-principal">
+            <button class="boton-nav activo" data-pagina="armador">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png">
+                Teambuilder
+            </button>
+            <button class="boton-nav" data-pagina="pokedex">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-radar.png">
+                Pokédex
+            </button>
+            <button class="boton-nav" data-pagina="importar-exportar">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/rule-book.png">
+                Importar / Exportar
+            </button>
+        </nav>
+
+        <button id="boton-menu" aria-label="Menú">☰</button>
+    </div>
+</header>
+
+<!-- Menú móvil desplegable -->
+<nav id="navegacion-movil">
+    <button class="boton-nav" data-pagina="armador">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png">
+        Teambuilder
+    </button>
+    <button class="boton-nav" data-pagina="pokedex">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-radar.png">
+        Pokédex
+    </button>
+    <button class="boton-nav" data-pagina="importar-exportar">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/rule-book.png">
+        Importar / Exportar
+    </button>
+</nav>
+
+
+<main id="contenido-principal">
+
+    <!-- TEAMBUILDER -->
+    <section id="pagina-armador" class="pagina pagina-activa">
+
+        <!-- Fila de 6 slots del equipo -->
+        <div id="resumen-equipo">
+            <div id="fila-slots">
+                <!-- Generado por JS → mostrarResumenEquipo() -->
+            </div>
+            <div id="acciones-equipo">
+                <button id="boton-limpiar-equipo">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-toy.png">
+                    Limpiar equipo
+                </button>
+                <button class="boton-nav" data-pagina="importar-exportar">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/parcel.png">
+                    Importar / Exportar
+                </button>
+            </div>
+        </div>
+
+        <!-- Diseño dos columnas: selector izquierda | editor derecha -->
+        <div id="diseno-armador">
+
+            <!-- Columna izquierda: lista para agregar Pokémon -->
+            <aside id="selector-pokemon">
+
+                <div id="fila-busqueda-selector">
+                    <div id="contenedor-busqueda-selector">
+                        <input id="entrada-busqueda-selector" type="text" placeholder="Buscar Pokémon…" autocomplete="off" />
+                        <ul id="autocompletado-selector"></ul>
+                    </div>
+                    <button id="boton-busqueda-selector">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/wide-lens.png">
+                        Buscar
+                    </button>
+                </div>
+
+                <div id="filtros-tipo-selector">
+                    <!-- Insignias de tipo generadas por JS -->
+                </div>
+
+                <div id="cuadricula-selector">
+                    <!-- Tarjetas generadas por JS → mostrarCuadriculaSelector() -->
+                </div>
+                <div id="paginacion-selector"></div>
+
+            </aside>
+
+            <!-- Columna derecha: formulario de edición -->
+            <div id="panel-editor">
+
+                <!-- Estado vacío -->
+                <div id="editor-vacio">
+                    <p>Haz clic en un slot del equipo para editarlo,<br />o agrega un Pokémon desde el panel izquierdo.</p>
+                </div>
+
+                <!-- Formulario estilo Smogon -->
+                <form id="formulario-editor" novalidate>
+
+                    <!-- Encabezado: sprite + nombre + tipos + botón quitar -->
+                    <div id="editor-cabecera">
+                        <img id="editor-sprite" src="" alt="" />
+                        <div id="editor-cabecera-info">
+                            <h2 id="editor-nombre-pokemon">—</h2>
+                            <div id="editor-tipos"></div>
+                        </div>
+                        <button type="button" id="boton-quitar-pokemon" title="Quitar del equipo">✕</button>
+                    </div>
+
+                    <!-- Apodo -->
+                    <div class="grupo-campo">
+                        <label for="campo-apodo">Apodo</label>
+                        <input id="campo-apodo" type="text" placeholder="Opcional" maxlength="12" />
+                    </div>
+
+                    <!-- Forma alternativa -->
+                    <div class="grupo-campo" id="grupo-formas">
+                        <label for="campo-forma">Forma</label>
+                        <select id="campo-forma">
+                            <option value="">— Normal —</option>
+                        </select>
+                    </div>
+
+                    <!-- Habilidad -->
+                    <div class="grupo-campo">
+                        <label for="campo-habilidad">Habilidad</label>
+                        <select id="campo-habilidad"></select>
+                    </div>
+
+                    <!-- Objeto (con autocompletado) -->
+                    <div class="grupo-campo">
+                        <label for="campo-objeto">Objeto</label>
+                        <div id="contenedor-busqueda-objeto">
+                            <input id="campo-objeto" type="text" placeholder="Buscar objeto…" autocomplete="off" />
+                            <ul id="autocompletado-objeto"></ul>
+                        </div>
+                    </div>
+
+                    <!-- Naturaleza -->
+                    <div class="grupo-campo">
+                        <label for="campo-naturaleza">Naturaleza</label>
+                        <select id="campo-naturaleza"></select>
+                    </div>
+                    <div id="efecto-naturaleza"></div>
+
+                    <!-- Movimientos (4 slots) -->
+                    <div class="grupo-campo">
+                        <label>Movimientos</label>
+                        <div id="lista-movimientos">
+                            <div class="ranura-movimiento" data-ranura="0">
+                                <select class="campo-movimiento"><option value="">— Movimiento 1 —</option></select>
+                            </div>
+                            <div class="ranura-movimiento" data-ranura="1">
+                                <select class="campo-movimiento"><option value="">— Movimiento 2 —</option></select>
+                            </div>
+                            <div class="ranura-movimiento" data-ranura="2">
+                                <select class="campo-movimiento"><option value="">— Movimiento 3 —</option></select>
+                            </div>
+                            <div class="ranura-movimiento" data-ranura="3">
+                                <select class="campo-movimiento"><option value="">— Movimiento 4 —</option></select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nivel -->
+                    <div class="grupo-campo grupo-campo-lineal">
+                        <label for="campo-nivel">Nivel</label>
+                        <input id="campo-nivel" type="number" min="1" max="100" value="100" />
+                    </div>
+
+                    <!-- Género -->
+                    <div class="grupo-campo grupo-campo-lineal">
+                        <label for="campo-genero">Género</label>
+                        <select id="campo-genero">
+                            <option value="M">♂ Macho</option>
+                            <option value="F">♀ Hembra</option>
+                            <option value="N">Sin género</option>
+                        </select>
+                    </div>
+
+                    <!-- Shiny -->
+                    <div class="grupo-campo grupo-campo-lineal">
+                        <label for="campo-shiny">Shiny ✨</label>
+                        <input id="campo-shiny" type="checkbox" />
+                    </div>
+
+                    <!-- EVs -->
+                    <div class="grupo-campo">
+                        <label>EVs &nbsp;<span id="total-evs">(0 / 510)</span></label>
+                        <div id="barras-evs"></div>
+                    </div>
+
+                    <!-- IVs -->
+                    <div class="grupo-campo">
+                        <label>IVs</label>
+                        <div id="entradas-ivs"></div>
+                    </div>
+
+                    <!-- Estadísticas finales -->
+                    <div class="grupo-campo">
+                        <label>Estadísticas Finales <span class="pista-etiqueta">(calculadas)</span></label>
+                        <div id="estadisticas-finales"></div>
+                    </div>
+
+                    <button type="button" id="boton-guardar-editor">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/medal-box.png">
+                        Guardar cambios
+                    </button>
+
+                </form>
+            </div><!-- /#panel-editor -->
+
+        </div><!-- /#diseno-armador -->
+    </section>
+
+
+    <!-- POKÉDEX -->
+    <section id="pagina-pokedex" class="pagina">
+
+        <div id="barra-busqueda-pokedex">
+            <div id="contenedor-busqueda-pokedex">
+                <input id="entrada-busqueda-pokedex" type="text" placeholder="Buscar por nombre o número…" autocomplete="off" />
+                <ul id="autocompletado-pokedex"></ul>
+            </div>
+            <button id="boton-buscar-pokedex">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/wide-lens.png">
+                Buscar
+            </button>
+            <button id="boton-limpiar-pokedex">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-toy.png">
+                Limpiar
+            </button>
+        </div>
+
+        <div id="filtros-tipo-pokedex"></div>
+
+        <h2 id="titulo-resultados-pokedex">Cargando Pokédex…</h2>
+        <div id="cuadricula-pokedex"></div>
+        <div id="paginacion-pokedex"></div>
+
+        <!-- Modal de detalle -->
+        <div id="fondo-modal-pokedex">
+            <div id="caja-modal-pokedex">
+                <button id="cerrar-modal-pokedex">✕</button>
+                <div id="contenido-modal-pokedex"></div>
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- IMPORTAR / EXPORTAR -->
+    <section id="pagina-importar-exportar" class="pagina">
+        <h1>Importar / Exportar</h1>
+        <p class="subtitulo-pagina">Formato compatible con Pokémon Showdown.</p>
+
+        <div id="diseno-importar-exportar">
+
+            <div id="bloque-exportar">
+                <h3>Exportar equipo</h3>
+                <textarea id="area-exportar" readonly placeholder="Presiona 'Generar' para ver tu equipo aquí…"></textarea>
+                <div id="acciones-exportar">
+                    <button id="boton-generar-exportar">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/scanner.png">
+                        Generar
+                    </button>
+                    <button id="boton-copiar-exportar">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/medal-box.png">
+                        Copiar
+                    </button>
+                </div>
+            </div>
+
+            <div id="bloque-importar">
+                <h3>Importar equipo</h3>
+                <textarea id="area-importar" placeholder="Pega aquí un equipo en formato Showdown…"></textarea>
+                <div id="acciones-importar">
+                    <button id="boton-cargar-importar">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/parcel.png">
+                        Cargar equipo
+                    </button>
+                </div>
+                <div id="respuesta-importar"></div>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+
+
+<!-- PIE DE PÁGINA -->
+<footer id="pie-pagina">
+    <div id="pie-interior">
+
+        <div id="pie-marca">
+            <span id="pie-logotipo">◈ Armador de Equipo</span>
+            <p>Pokémon es marca registrada de Nintendo / Game Freak.<br />Proyecto de uso educativo, sin fines comerciales.</p>
+        </div>
+
+        <div id="pie-enlaces">
+            <p>Datos: <a href="https://pokeapi.co" target="_blank" rel="noopener">PokéAPI</a></p>
+            <p>Sprites: <a href="https://pokemonshowdown.com" target="_blank" rel="noopener">Pokémon Showdown</a></p>
+            <p>Agradecimientos: <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener">Pokémon</a></p>
+        </div>
+
+        <div id="pie-estado-equipo">
+            <span id="contador-equipo-pie">Equipo: 0 / 6</span>
+            <button class="boton-nav" data-pagina="armador">Ir al Armador ↗</button>
+        </div>
+
+    </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
