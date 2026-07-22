@@ -1,0 +1,140 @@
+/* --- Animaciones de Entrada (Keyframes) --- */
+@keyframes aparecerDesdeAbajo {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.boton-nav { animation: aparecerDesdeAbajo 2s ease-out;}
+.boton-nav:hover {
+    /* Transformación al pasar el mouse */
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    border-bottom: 5px solid var(--primary);
+}
+.anim-titulo { animation: aparecerDesdeAbajo 1s ease-out; }
+.anim-subtitulo { animation: aparecerDesdeAbajo 1.2s ease-out; }
+
+.card {
+    background: rgb(255, 255, 255, 0.55);
+    padding: 40px 30px;
+    width: min(100%, 1000px);
+    height: auto;
+    border-radius: 30px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    /* Transición para que el hover sea suave */
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+}
+
+.card:hover {
+    /* Transformación al pasar el mouse */
+    transform: translateY(-15px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    border-bottom: 5px solid var(--primary);
+}
+
+/* ═══════════════════════════════════════
+   style.css — Pokémon TEAMBUILDER
+   ═══════════════════════════════════════ */
+
+:root {
+  --color-fondo:         #0d1117;
+  --color-superficie:    #161b22;
+  --color-tarjeta:       #1c2333;
+  --color-tarjeta-hover: #243044;
+  --color-borde:         #30363d;
+  --color-acento:        #e94560;
+  --color-acento-oscuro: #c73652;
+  --color-acento2:       #58a6ff;
+  --color-texto:         #e6edf3;
+  --color-atenuado:      #8b949e;
+  --color-exito:         #3fb950;
+
+  --alto-cabecera: 60px;
+  --radio-sm:  6px;
+  --radio:    10px;
+  --radio-lg: 16px;
+  --transicion: 0.2s ease;
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+button  { cursor: pointer; font-family: inherit; font-size: inherit; }
+img     { display: block; }
+a       { color: var(--color-acento2); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1, h2, h3, h4 { font-weight: 600; line-height: 1.2; }
+select, input, textarea { font-family: inherit; font-size: inherit; color: var(--color-texto); }
+
+
+
+/* INSIGNIAS DE TIPO */
+.insignia-tipo {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: .7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+  cursor: pointer;
+  opacity: .75;
+  transition: opacity var(--transicion), outline var(--transicion);
+  user-select: none;
+}
+
+.insignia-tipo.activa { opacity: 1; outline: 2px solid #fff4; }
+
+.tipo-normal   { background:#9199a1; color:#fff; }
+.tipo-fire     { background:#ff9c54; color:#fff; }
+.tipo-water    { background:#4d90d5; color:#fff; }
+.tipo-grass    { background:#63bb5b; color:#fff; }
+.tipo-electric { background:#f3d23b; color:#333; }
+.tipo-ice      { background:#74cec0; color:#fff; }
+.tipo-fighting { background:#ce4069; color:#fff; }
+.tipo-poison   { background:#ab6ac8; color:#fff; }
+.tipo-ground   { background:#d97746; color:#fff; }
+.tipo-flying   { background:#8fa8dd; color:#fff; }
+.tipo-psychic  { background:#f97176; color:#fff; }
+.tipo-bug      { background:#90c12c; color:#fff; }
+.tipo-rock     { background:#c7b78b; color:#fff; }
+.tipo-ghost    { background:#5269ac; color:#fff; }
+.tipo-dragon   { background:#0a6dc4; color:#fff; }
+.tipo-dark     { background:#5a5366; color:#fff; }
+.tipo-steel    { background:#5a8ea1; color:#fff; }
+.tipo-fairy    { background:#ec8fe6; color:#fff; }
+
+
+/* PAGINACIÓN */
+.boton-paginacion {
+  padding: 4px 9px;
+  border-radius: var(--radio-sm);
+  border: 1px solid var(--color-borde);
+  background: var(--color-tarjeta);
+  color: var(--color-texto);
+  font-size: .78rem;
+  transition: all var(--transicion);
+}
+
+.boton-paginacion:hover   { background: var(--color-tarjeta-hover); }
+.boton-paginacion.activo  { background: var(--color-acento); border-color: var(--color-acento); color: #fff; }
+.boton-paginacion:disabled { opacity: .35; cursor: default; }
+
+
+/* UTILIDADES */
+.cargando {
+  text-align: center;
+  padding: 28px;
+  color: var(--color-atenuado);
+  font-size: .88rem;
+  width: 100%;
+}

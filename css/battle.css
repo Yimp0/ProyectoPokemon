@@ -1,0 +1,422 @@
+/* ── Wrapper ── */
+.batalla-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 740px;
+  min-height: unset;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.batalla-pantalla {
+  display: none;
+}
+
+.batalla-pantalla.activa {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: unset;
+}
+
+  /* ── Pantalla inicio ── */
+  .batalla-inicio-contenido { background:linear-gradient(135deg,#1a1a2e 0%,#16213e 60%,#0f3460 100%);
+    border:2px solid #e94560; border-radius:16px; padding:32px 40px; max-width:600px;
+    width:100%; text-align:center; box-shadow:0 0 40px #e9456044; }
+  .batalla-inicio-titulo { font-size:2rem; font-weight:700; color:#e94560;
+    letter-spacing:2px; margin-bottom:8px; }
+  .pokeball-deco { margin-right:8px; }
+  .batalla-inicio-desc { color:#aaa; margin-bottom:24px; font-size:.95rem; }
+  .seleccion-hint { color:#ccc; font-size:.88rem; margin-bottom:10px; }
+  #batalla-slots-equipo { display:flex; flex-wrap:wrap; gap:10px;
+    justify-content:center; margin-bottom:20px; }
+  .batalla-slot-sel { background:#0d1b2a; border:2px solid #334; border-radius:10px;
+    padding:8px 12px; cursor:pointer; display:flex; flex-direction:column;
+    align-items:center; gap:4px; transition:all .2s; min-width:80px; }
+  .batalla-slot-sel img { width:56px; height:56px; image-rendering:pixelated; }
+  .batalla-slot-sel span { font-size:.72rem; color:#ccc; text-align:center; }
+  .batalla-slot-sel:hover { border-color:#e94560; transform:translateY(-2px); }
+  .batalla-slot-sel.seleccionado { border-color:#f5a623; background:#1a2a0a;
+    box-shadow:0 0 12px #f5a62366; }
+  .sin-equipo { color:#aaa; padding:16px; background:#111; border-radius:8px; }
+  .btn-batalla-primario { background:linear-gradient(90deg,#e94560,#c62a47);
+    color:#fff; border:none; border-radius:10px; padding:14px 36px;
+    font-size:1.05rem; font-weight:700; cursor:pointer; letter-spacing:1px;
+    transition:transform .15s, box-shadow .15s; margin-top:8px; }
+  .btn-batalla-primario:hover:not(:disabled) { transform:scale(1.04);
+    box-shadow:0 0 20px #e9456066; }
+  .btn-batalla-primario:disabled { opacity:.5; cursor:not-allowed; }
+
+  /* ── Arena ── */
+  #batalla-arena { position:relative; width:100%; max-width:740px;
+    background:linear-gradient(180deg,#1a1a2e 0%,#0f3460 100%);
+    border-radius:16px; border:2px solid #334; overflow:hidden;
+    padding:0; min-height:520px; display:flex; flex-direction:column; }
+
+  .arena-bg { position:absolute; inset:0; pointer-events:none; z-index:0; }
+  .arena-suelo-enemigo { position:absolute; top:28%; left:5%; width:42%;
+    height:30px; background:radial-gradient(ellipse,#2a3a2a 60%,transparent 100%);
+    opacity:.5; border-radius:50%; }
+  .arena-suelo-jugador { position:absolute; bottom:32%; right:5%; width:42%;
+    height:30px; background:radial-gradient(ellipse,#2a3a2a 60%,transparent 100%);
+    opacity:.5; border-radius:50%; }
+
+  /* Info Pokémon */
+  .info-pokemon { position:absolute; z-index:2; background:rgba(0,0,0,.65);
+    border:1.5px solid #334; border-radius:10px; padding:8px 14px;
+    min-width:180px; backdrop-filter:blur(4px); }
+  .info-enemigo { top:12px; left:12px; }
+  .info-jugador { bottom:130px; right:12px; }
+
+  .info-nombre-nivel { display:flex; gap:8px; align-items:center; margin-bottom:4px; }
+  .info-nombre { font-weight:700; font-size:.9rem; color:#fff; text-transform:capitalize; }
+  .info-nivel  { font-size:.75rem; color:#aaa; }
+  .info-estado-badge { font-size:.65rem; font-weight:700; padding:1px 5px;
+    border-radius:4px; background:#555; color:#fff; }
+  .info-estado-badge.oculto { display:none; }
+  .estado-paralizado { background:#f8c; color:#333; }
+  .estado-envenenado { background:#a0f; color:#fff; }
+  .estado-quemado    { background:#f64; color:#fff; }
+  .estado-dormido    { background:#88a; color:#fff; }
+  .estado-congelado  { background:#8ef; color:#333; }
+
+  .hp-barra-contenedor { display:flex; align-items:center; gap:6px; }
+  .hp-label { font-size:.7rem; font-weight:700; color:#8f8; }
+  .hp-pista { flex:1; background:#222; border-radius:4px; height:8px;
+    overflow:hidden; min-width:100px; }
+  .hp-relleno { height:100%; border-radius:4px; transition:width .4s ease; }
+  .hp-relleno.verde   { background:linear-gradient(90deg,#4f4,#0c0); }
+  .hp-relleno.amarillo{ background:linear-gradient(90deg,#ff0,#fa0); }
+  .hp-relleno.rojo    { background:linear-gradient(90deg,#f44,#c00); }
+  .hp-numeros { font-size:.7rem; color:#ccc; text-align:right; margin-top:2px; }
+
+  /* Sprites */
+  .sprite-contenedor { position:absolute; z-index:3; }
+  .sprite-enemigo-cont { top:30px; right:30px; }
+  .sprite-jugador-cont { bottom:130px; left:30px; }
+  .sprite-batalla { width:112px; height:112px; image-rendering:pixelated; }
+  .sprite-jugador { transform:scaleX(1); -webkit-transform:scaleX(1); -moz-transform:scaleX(1); -ms-transform:scaleX(1); -o-transform:scaleX(1); }
+
+  @keyframes golpeado {
+    0%  { filter:brightness(1); transform:translateX(0) scaleX(var(--sx,1)); }
+    20% { filter:brightness(5) saturate(0); transform:translateX(-8px) scaleX(var(--sx,1)); }
+    40% { filter:brightness(1); transform:translateX(4px) scaleX(var(--sx,1)); }
+    60% { filter:brightness(3); transform:translateX(-4px) scaleX(var(--sx,1)); }
+    80% { filter:brightness(1); transform:translateX(2px) scaleX(var(--sx,1)); }
+    100%{ filter:brightness(1); transform:translateX(0) scaleX(var(--sx,1)); }
+  }
+  .sprite-jugador-cont { --sx: -1; }
+  .sprite-enemigo-cont { --sx: 1; }
+  .golpeado { animation:golpeado .5s ease; }
+
+  @keyframes fallo-anim { 0%,100%{opacity:1} 50%{opacity:.2} }
+  .fallo { animation:fallo-anim .6s ease; }
+
+  @keyframes victoria-anim {
+    0%,100%{ transform:translateX(0) scaleX(-1) }
+    50%    { transform:translateX(0) scaleX(-1) translateY(-8px) }
+  }
+  .sprite-jugador-cont.victoria .sprite-batalla {
+    animation:victoria-anim .5s ease infinite; }
+
+  /* ── Caja de batalla ── */
+  .caja-batalla { position:absolute; bottom:0; left: 0;width: 100%; z-index:4;
+    background:linear-gradient(180deg,#0d1b2a,#0a1220);
+    border-top:2px solid #334; min-height:110px;
+    display:flex; flex-direction:column; }
+
+  .batalla-log { padding:14px 18px; flex:1; display:flex; align-items:center; }
+  #texto-batalla { color:#e8e8e8; font-size:.92rem; line-height:1.5; margin:0;
+    font-family:'Montserrat',sans-serif; }
+
+  @keyframes texto-aparece { from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:translateY(0)} }
+  .texto-aparece { animation:texto-aparece .25s ease forwards; }
+
+  .acciones-batalla, .cambio-pokemon { padding:8px 12px; }
+  .oculto { display:none !important; }
+
+  .movimientos-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:6px; }
+  .btn-movimiento { border:none; border-radius:8px; padding:8px 10px;
+    cursor:pointer; text-align:left; transition:filter .15s, transform .1s;
+    display:flex; flex-direction:column; gap:2px; }
+  .btn-movimiento:hover { filter:brightness(1.2); transform:scale(1.02); }
+  .mov-nombre { font-weight:700; font-size:.8rem; color:#fff; text-transform:capitalize; }
+  .mov-detalle { font-size:.68rem; color:rgba(255,255,255,.75); }
+  .mov-tipo { font-style:italic; text-transform:capitalize; }
+
+  /* Fondos por tipo */
+  .tipo-bg-normal   { background:#9098a1; }
+  .tipo-bg-fire     { background:#e62829; }
+  .tipo-bg-water    { background:#2980ef; }
+  .tipo-bg-grass    { background:#3fa129; }
+  .tipo-bg-electric { background:#fac000; }
+  .tipo-bg-ice      { background:#3dcef3; }
+  .tipo-bg-fighting { background:#ff8000; }
+  .tipo-bg-poison   { background:#9141cb; }
+  .tipo-bg-ground   { background:#915121; }
+  .tipo-bg-flying   { background:#81b9ef; }
+  .tipo-bg-psychic  { background:#ef4179; }
+  .tipo-bg-bug      { background:#91a119; }
+  .tipo-bg-rock     { background:#aaa567; }
+  .tipo-bg-ghost    { background:#704170; }
+  .tipo-bg-dragon   { background:#5060e1; }
+  .tipo-bg-dark     { background:#494949; }
+  .tipo-bg-steel    { background:#60a1b8; }
+  .tipo-bg-fairy    { background:#ef70ef; }
+
+  .acciones-extra { display:flex; gap:8px; }
+  .btn-accion-extra { flex:1; background:#1a2a3a; border:1.5px solid #445;
+    color:#ccc; border-radius:8px; padding:7px 10px; cursor:pointer;
+    font-size:.78rem; transition:all .15s; }
+  .btn-accion-extra:hover { background:#2a3a4a; color:#fff; border-color:#667; }
+
+  /* Cambio de Pokémon */
+  .cambio-titulo { color:#ddd; font-size:.85rem; margin:0 0 8px; }
+  .cambio-slots  { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:8px; }
+  .cambio-slot   { background:#0d1b2a; border:1.5px solid #334;
+    border-radius:8px; padding:6px 10px; display:flex; align-items:center;
+    gap:8px; cursor:pointer; transition:border-color .15s; }
+  .cambio-slot:hover { border-color:#e94560; }
+  .cambio-slot img { width:44px; height:44px; image-rendering:pixelated; }
+  .cambio-slot div { display:flex; flex-direction:column; }
+  .cambio-slot strong { font-size:.8rem; color:#ddd; text-transform:capitalize; }
+  .cambio-slot span   { font-size:.7rem; color:#888; }
+
+  /* ── Resultado ── */
+#batalla-resultado {
+  background: linear-gradient(135deg, #1a1a2e, #0f3460);
+  min-height: unset;
+  padding: 40px 16px;
+  width: 100%;
+}
+  .resultado-contenido { background:rgba(0,0,0,.6); border:2px solid #334;
+    border-radius:16px; padding:40px; text-align:center; max-width:480px; width:90%; }
+  .resultado-titulo { font-size:2.5rem; font-weight:700; color:#e94560; margin-bottom:10px; }
+  .resultado-subtitulo { color:#aaa; margin-bottom:24px; font-size:1rem; }
+  .resultado-sprites { display:flex; align-items:center; justify-content:center;
+    gap:20px; margin-bottom:28px; }
+  .resultado-sprites img { width:80px; height:80px; image-rendering:pixelated; }
+
+/* ── CENTRADO BATALLA ── */
+/* Nota: display lo controla .pagina / .pagina-activa */
+#pagina-batalla-prueba.pagina-activa {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 24px 16px;
+  box-sizing: border-box;
+  width: 100%;
+  position: relative;
+}
+
+.batalla-wrapper {
+  width: 100%;
+  max-width: 740px;
+  position: relative;
+}
+
+#batalla-arena {
+  position: relative;
+  width: 100%;
+  max-width: 740px;
+  height: 520px;
+  box-sizing: border-box;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+/* ── VISTA PARA TABLET ── */
+@media (max-width: 768px) {
+  #pagina-batalla-prueba.pagina-activa {
+    padding: 16px 8px;
+  }
+
+  .batalla-inicio-contenido {
+    max-width: 100%;
+    padding: 26px 22px;
+  }
+}
+
+/* ── VISTA PARA CELULAR ── */
+@media (max-width: 600px) {
+  #pagina-batalla-prueba.pagina-activa {
+    padding: 8px 0;
+  }
+
+  .batalla-wrapper {
+    max-width: 100%;
+  }
+
+  .batalla-inicio-contenido {
+    padding: 22px 14px;
+    border-radius: 12px;
+  }
+
+  .batalla-inicio-titulo {
+    font-size: 1.45rem;
+    letter-spacing: 1px;
+  }
+
+  .batalla-inicio-desc {
+    margin-bottom: 18px;
+    font-size: .84rem;
+  }
+
+  #batalla-slots-equipo {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .batalla-slot-sel {
+    min-width: 0;
+    padding: 7px 5px;
+  }
+
+  .btn-batalla-primario {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: .9rem;
+  }
+
+  #batalla-arena {
+    height: 650px;
+    min-height: 650px;
+    border-radius: 10px;
+  }
+
+  .info-pokemon {
+    width: min(58%, 205px);
+    min-width: 0;
+    padding: 7px 9px;
+  }
+
+  .info-enemigo {
+    top: 10px;
+    left: 6px;
+  }
+
+  .info-jugador {
+    right: 6px;
+    bottom: 292px;
+  }
+
+  .info-nombre-nivel {
+    flex-wrap: wrap;
+    gap: 4px 6px;
+  }
+
+  .info-nombre {
+    max-width: 105px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .hp-pista {
+    min-width: 45px;
+  }
+
+  .sprite-batalla {
+    width: 88px;
+    height: 88px;
+  }
+
+  .sprite-enemigo-cont {
+    top: 82px;
+    right: 16px;
+  }
+
+  .sprite-jugador-cont {
+    bottom: 300px;
+    left: 14px;
+  }
+
+  .arena-suelo-enemigo {
+    top: 25%;
+  }
+
+  .arena-suelo-jugador {
+    bottom: 43%;
+  }
+
+  .caja-batalla {
+    min-height: 270px;
+  }
+
+  .batalla-log {
+    min-height: 66px;
+    padding: 10px 12px;
+  }
+
+  #texto-batalla {
+    font-size: .82rem;
+  }
+
+  .acciones-batalla,
+  .cambio-pokemon {
+    padding: 6px 8px 8px;
+  }
+
+  .movimientos-grid {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+
+  .btn-movimiento {
+    padding: 7px 9px;
+  }
+
+  .acciones-extra {
+    gap: 5px;
+  }
+
+  .btn-accion-extra {
+    padding: 8px 5px;
+    font-size: .72rem;
+  }
+
+  .cambio-slots {
+    display: grid;
+    grid-template-columns: 1fr;
+    max-height: 160px;
+    overflow-y: auto;
+  }
+
+  #batalla-resultado {
+    padding: 24px 8px;
+  }
+
+  .resultado-contenido {
+    width: 100%;
+    padding: 26px 14px;
+  }
+
+  .resultado-titulo {
+    font-size: 1.8rem;
+  }
+
+  .resultado-sprites {
+    gap: 10px;
+  }
+
+  .resultado-sprites img {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+@media (max-width: 380px) {
+  .batalla-inicio-titulo {
+    font-size: 1.25rem;
+  }
+
+  .sprite-batalla {
+    width: 76px;
+    height: 76px;
+  }
+
+  .info-pokemon {
+    width: 61%;
+  }
+}
