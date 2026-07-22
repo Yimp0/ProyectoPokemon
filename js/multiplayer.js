@@ -44,7 +44,7 @@
 //    Ejemplo producción: 'wss://tu-servidor.com/batalla'
 //    Ejemplo desarrollo: 'ws://localhost:3000'
 //
-const MULTI_WS_URL = 'ws://localhost:3000';
+const MULTI_WS_URL = 'wss://proyectopokemon-duu1.onrender.com';
 
 
 const MSG = {
